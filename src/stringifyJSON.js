@@ -5,13 +5,13 @@
 
 var stringifyJSON = function(obj) {
 	var stringified = [];
-    
+    var stringify = "{";
 
     if(typeof obj === 'string'){
   		return "\"" + obj + "\"";
   	} else if(typeof obj === 'number'){
   		return "" + obj;
-  	} else if(obj === null || obj === 'undifend' || typeof obj === 'boolean'){
+  	} else if(obj === null || obj === undefined || typeof obj === 'boolean'){
   		return "" + obj;
   	} 
 
@@ -29,53 +29,20 @@ var stringifyJSON = function(obj) {
 
    
  	else if(typeof obj === 'object'){
-    
-    	
-     } 
-     else{
+    // each piece key could possibly be a stirng, can handle with recursion,
+    // else if statement can handle emtpy objects. 
+    //
+       for (var el in obj) {
+      	if(Object.values(obj).length === 1){
+        stringify += (stringifyJSON(el) + ":" + stringifyJSON(obj[el]));  
+      	} else {
+      	stringify += (stringifyJSON(el) + ":" + stringifyJSON(obj[el]));  
+      	}
+       }
 
-     for (var el in obj) {
-        if (obj.hasOwnProperty(el)) {
-              stringifyJSON(el);
-         	}
-            if (el.toString() && obj[el].toString()) {
-                start += el.toString() + ": " + obj[el].toString();
-            }
-	         if (typeof obj[el] === 'object') {
-	            start += stringifyJSON(obj[el]);    
-	        }
-           
-  		}
-  	 }
-    }
-
-    return stringify + "}"
+    return stringify + "}";
 
 
     }
 };
 
-
-
-  // var stringify = "{";
-
-
-  //   
-  //       } 
-  //    else{
-  //    for (var el in obj) {
-  //       if (obj.hasOwnProperty(el)) {
-  //             stringifyJSON(el);
-  //        	}
-  //           if (el.toString() && obj[el].toString()) {
-  //               start += el.toString() + ": " + obj[el].toString();
-  //           }
-	 //         if (typeof obj[el] === 'object') {
-	 //            start += stringifyJSON(obj[el]);    
-	 //        }
-           
-  // 		}
-  // 	 }
-  //   }
-
-  //   return stringify + "}"
