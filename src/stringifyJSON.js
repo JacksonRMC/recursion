@@ -6,6 +6,7 @@
 var stringifyJSON = function(obj) {
 	var stringified = [];
     var stringify = "{";
+     var results =[];
 
     if(typeof obj === 'string'){
   		return "\"" + obj + "\"";
@@ -29,20 +30,17 @@ var stringifyJSON = function(obj) {
 
    
  	else if(typeof obj === 'object'){
-    // each piece key could possibly be a stirng, can handle with recursion,
-    // else if statement can handle emtpy objects. 
-    //
-       for (var el in obj) {
-      	if(Object.values(obj).length === 1){
-        stringify += (stringifyJSON(el) + ":" + stringifyJSON(obj[el]));  
-      	} else {
-      	stringify += (stringifyJSON(el) + ":" + stringifyJSON(obj[el]));  
-      	}
+      	if(Object.keys(obj).length === 0){
+       		return '{}';
+       	} else { 	
+       	for (var el in obj) {
+       		if(obj[el] instanceof Function || typeof obj[el] === undefined){
+       			return '{}';
+       		}
+ 	     results.push(stringifyJSON(el)+ ":" +stringifyJSON(obj[el]));  
+       	}
        }
-
-    return stringify + "}";
-
-
+    return "{" + results + "}";
     }
 };
 
